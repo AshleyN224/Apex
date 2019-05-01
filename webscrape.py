@@ -15,9 +15,7 @@ if args.W:
         client = yweather.Client()
 
         # User Input
-        user_city = str(input('Enter city: '))
-        user_state = str(input('Enter State:'))
-        user_location = user_city +','+ user_state
+        user_location = str(input('Enter location: '))
         ##print(user_location)
 
         # Get WOEID

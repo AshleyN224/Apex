@@ -16,7 +16,7 @@ if args.W:
 
         # User Input
         user_city = str(input('Enter city: '))
-        user_state = str(input('Enter State:'))
+        user_state = str(input('Enter State: '))
         user_location = user_city +','+ user_state
         ##print(user_location)
 

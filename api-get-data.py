@@ -1,7 +1,6 @@
 # TO DO:
 # Sort trends by their tweet volume
-# incorporate webscrape.py
-# potentially incorporate panda
+# Convert to dataframe and output to .txt file
 
 import tweepy # python twitter wrapper
 import json

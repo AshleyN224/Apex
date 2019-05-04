@@ -1,5 +1,6 @@
-# create classes to use -W for get woeid and -T for getting twitter info 
-# note: to use something like -W, a class and methods would have to be made, which can be done.
+# TO DO: 
+# Sort trends by their tweet volume
+# Convert to dataframe and output to .txt file
 
 # Use: pip install fire (fire is a new CLI created by Google in 2017)
 

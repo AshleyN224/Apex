@@ -23,6 +23,7 @@ class World_of_Tweets(object):
     """ Gets WOEID for a location.
     Usage 1: python All_Together.py locations <"location">
     Usage 2: python All_Together.py GeoTweets locate
+    Note: Names of locations should be in double quotations ie. "New York" or "Italy"
     Help: python All_Together.py -- --help """
 
     # Setting up CLI using fire
@@ -38,10 +39,6 @@ class World_of_Tweets(object):
         # Get WOEID
         print(user_location)
         print('WOIED:', client.fetch_woeid(user_location))
-
-# Farewell
-#pad = 75
-#print('*' * pad)
 
 #########################################################################################################
 #########################################################################################################
@@ -96,3 +93,7 @@ def main():
 # Turns locations into CLI using fire. 
 if __name__ == '__main__':
     main()
+
+# Farewell
+pad = 75
+print('*' * pad)

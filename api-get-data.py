@@ -5,7 +5,7 @@
 
 import tweepy # python twitter wrapper
 import json
-import pandas as import pd
+import pandas as pd
 
 # set keys for authentication
 consumer_key = 's3ROZ7S9ptoChaQLp1MCVa5Pr'
@@ -35,8 +35,6 @@ with open('trend_data.json', 'w') as outfile:
 # opens .json file to avoid calling api and hitting rate limits
 #with open('trend_data.json') as json_file:  
 #    data = json.load(json_file)
-
-
 
 # header for data being displayed
 print('\nTop Twitter trends as of {} in {}.'.format(data['as_of'][:10], data['locations'][0]['name']))

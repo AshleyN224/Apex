@@ -1,28 +1,55 @@
 # TO DO: 
-# Sort trends by their tweet volume
-# Convert to dataframe and output to .txt file
-# display usage options
+# output to .txt file
 # add exception handling for locations not covered by API
 
-# Imports
+## Imports
 
 import sys
 import json
+from collections import OrderedDict
 
 import pyfiglet # ascii art
 import yweather # used for fetching WOEID
-import pandas as pd
 
 from auth import api
 
-# functions
+## functions
+
+def usageOptions():
+    '''Display usage options to user on invalid input or when -h is called.'''
+    print('\nUsage options\n'
+        +'- Get top trends of a geographical location:\n'
+        +'\tpython geotweets.py -trends\n'
+        +'\tpython geotweets.py -trends [city | country]\n\n'
+        +'- Fetch Where On Earth ID (WOEID) of a geographical location:\n'
+        +'\tpython geotweets.py -woeid\n'
+        +'\tpython geotweets.py -woeid [city | country]\n\n'
+        +'- Enter command line interface of the program:\n'
+        +'\tpython geotweets.py')
 
 def getWoeid(location):
+    '''Fetches Where On Earth ID of a given location.'''
     client = yweather.Client()
     return client.fetch_woeid(location)
 
-
 def geoTweets(woeid):
+    '''
+    Uses Twitter trends/place API endpoint to fetch top trends in a given location.
+
+    Location is determined by using Where On Earth ID (WOEID) from yweather. 
+    Yweather will take a user string of a city or country. Twitter will only
+    supply trends.json information for 467 WOEIDs. 
+
+    Tweepy sends the GET request for the trends.json file, displaying information about
+    the top 50 trends in a given location. This program focuses only on trend names and
+    tweet_volume from the .json. Twitter API will return 'None' for some trends, 
+    this program will eliminate those trends so that the top trends can be sorted by descending
+    tweet volume.
+
+    Each trend that has a tweet_volume != None will be added to a dictionary, which is then sorted
+    using OrderedDict. The sorted dictionary gets printed to the user.
+    '''
+
     client = yweather.Client()
     
     # api call for trends/place endpoint resulting in json output
@@ -35,19 +62,26 @@ def geoTweets(woeid):
     
     # header for data being displayed
     print('\nTop Twitter trends as of {} in {}.'.format(data['as_of'][:10], data['locations'][0]['name']))
-    print('\n{:>15}:\t{}\n'.format('Trend','Tweet Volume') + '-'*40)    
-    
-    # only print trends where tweet_volume is an int and not null.
-    for i in range(50):
-        try:
-            print('{:>15}:\t{:,}'.format(data['trends'][i]['name'],data['trends'][i]['tweet_volume']))
+    print('\n   {:>20}:\t{}\n'.format('Trend','Tweet Volume') + '-'*40)
 
-        except:
+    # put trends where tweet_volume is an int and not null into dictionary
+    d = {}
+    for x in range(50):
+        if data['trends'][x]['tweet_volume'] != None:
+            d[data['trends'][x]['name']] = data['trends'][x]['tweet_volume']
+        else:
             pass
 
-    print('-'*40)
+    # sort tweets dictionary by descending tweet_volume
+    sortDict = OrderedDict(sorted(d.items(), key=lambda t: t[1],reverse=True))
+    count = 1
+    for k, v in sortDict.items():
+        print('{:02}) {:>20}:\t{:,}'.format(count, k,v))
+        count += 1
 
-# main
+    print('-'*40) # padding
+
+## main
 
 # give greeting and prompt user for inputs 
 if len(sys.argv) == 1:
@@ -75,7 +109,7 @@ if len(sys.argv) == 1:
 
 # display usage options
 elif sys.argv[1] == '-h':
-    print('help')
+    usageOptions()
 
 # get trends and tweet_volume
 elif sys.argv[1] == '-trends':

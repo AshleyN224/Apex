@@ -2,6 +2,7 @@
 # Sort trends by their tweet volume
 # Convert to dataframe and output to .txt file
 # display usage options
+# add exception handling for locations not covered by API
 
 # Imports
 

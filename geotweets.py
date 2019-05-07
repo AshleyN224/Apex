@@ -1,6 +1,5 @@
 # TO DO: 
 # output to .txt file
-# add exception handling for locations not covered by API
 
 ## Imports
 
@@ -17,21 +16,23 @@ from auth import api
 
 def usageOptions():
     '''Display usage options to user on invalid input or when -h is called.'''
-    print('\nUsage options\n'
+    print('\nUsage Options\n'
         +'- Get top trends of a geographical location:\n'
-        +'\tpython geotweets.py -trends\n'
-        +'\tpython geotweets.py -trends [city | country]\n\n'
+        +'\t> python geotweets.py -trends\n'
+        +'\t> python geotweets.py -trends [city | country]\n\n'
         +'- Fetch Where On Earth ID (WOEID) of a geographical location:\n'
-        +'\tpython geotweets.py -woeid\n'
-        +'\tpython geotweets.py -woeid [city | country]\n\n'
+        +'\t> python geotweets.py -woeid\n'
+        +'\t> python geotweets.py -woeid [city | country]\n\n'
         +'- Enter command line interface of the program:\n'
-        +'\tpython geotweets.py')
+        +'\t> python geotweets.py'
+        +'\n\nNote: Locations that have more than one word should be put in quotes. Example:\n'
+        +'\t> python geotweet.py -trends \'Los Angeles\'')
 
 def getWoeid(location):
     '''Fetches Where On Earth ID of a given location.'''
     client = yweather.Client()
     return client.fetch_woeid(location)
-
+        
 def geoTweets(woeid):
     '''
     Uses Twitter trends/place API endpoint to fetch top trends in a given location.
@@ -62,7 +63,7 @@ def geoTweets(woeid):
     
     # header for data being displayed
     print('\nTop Twitter trends as of {} in {}.'.format(data['as_of'][:10], data['locations'][0]['name']))
-    print('\n   {:>20}:\t{}\n'.format('Trend','Tweet Volume') + '-'*40)
+    print('\n   {:>20}:\t{}\n'.format('Trend','Tweet Volume') + '-'*50)
 
     # put trends where tweet_volume is an int and not null into dictionary
     d = {}
@@ -79,7 +80,7 @@ def geoTweets(woeid):
         print('{:02}) {:>20}:\t{:,}'.format(count, k,v))
         count += 1
 
-    print('-'*40) # padding
+    print('-'*50) # padding
 
 ## main
 
@@ -88,7 +89,7 @@ if len(sys.argv) == 1:
     # ascii art greeting
     art = pyfiglet.figlet_format("World of Tweets", font = "5lineoblique" ) 
     print(art)
-    print('*' * 75)
+    print('-' * 75)
     
     # loop that prompts user what they would like to do
     while True:
@@ -116,21 +117,35 @@ elif sys.argv[1] == '-trends':
     # when user provides location via CLI
     if len(sys.argv) == 3:
         woeid = getWoeid(sys.argv[2])
-        geoTweets(woeid)
+        try:
+            geoTweets(woeid)
+        except:
+            print('\nERROR: Twitter does not record data for that location or it does not exist.\n') 
 
     # when user does not provide location via CLI
     elif len(sys.argv) == 2:
         woeid = getWoeid(str(input('Enter location: ')))
-        geoTweets(woeid)
+        try:
+            geoTweets(woeid)
+        except:
+            print('\nERROR: Twitter does not record data for that location or it does not exist.\n') 
 
 elif sys.argv[1] == '-woeid':
     #  when user provides location via CLI
     if len(sys.argv) == 3:
-        print('WOEID:',getWoeid(sys.argv[2]))
+        woeid = getWoeid(sys.argv[2])
+        if woeid == None:
+            print('That location does not exist.')
+        else:
+            print('WOEID:', woeid)
 
     #  when user does not provide location via CLI
     elif len(sys.argv) == 2:
-        print('WOEID:', getWoeid(str(input('Enter location: '))))
+        woeid = getWoeid(str(input('Enter location: ')))
+        if woeid == None:
+            print('That location does not exist.')
+        else:
+            print('WOEID:', woeid)
 
 else:
     print('Input not recognized. use the -h flag for usage instructions.')

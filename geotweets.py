@@ -105,11 +105,10 @@ if len(sys.argv) == 1:
         elif choice == '2':
             woeid = getWoeid(str(input('Enter location: ')))
             if woeid == None:
-                print('\n! ERROR: That location does not exist.')
+                print('\n! ERROR: That location does not exist.\n')
             else:
-                print('WOEID:', woeid)
+                print('\nWOEID:', woeid)
             
-
         elif choice == '3':
             print('Exiting. Goodbye!')
             sys.exit()
@@ -129,15 +128,21 @@ elif sys.argv[1] == '-trends':
         try:
             geoTweets(woeid)
         except:
-            print('\nERROR: Twitter does not record data for that location or it does not exist.\n') 
-
+            print('\n! ERROR: Twitter does not record data for that location or it does not exist.\n') 
+    
     # when user does not provide location via CLI
     elif len(sys.argv) == 2:
         woeid = getWoeid(str(input('Enter location: ')))
         try:
             geoTweets(woeid)
         except:
-            print('\nERROR: Twitter does not record data for that location or it does not exist.\n') 
+            print('\n! ERROR: Twitter does not record data for that location or it does not exist.\n') 
+
+    # when user inputs more than one word for the location
+    else:
+        print('\n! ERROR: Locations that have more than one word should be put in quotes\n'
+        +'Example: > python geotweet.py -trends \'Los Angeles\'\n')
+
 
 # get woeid for provided location
 elif sys.argv[1] == '-woeid':
@@ -145,17 +150,17 @@ elif sys.argv[1] == '-woeid':
     if len(sys.argv) == 3:
         woeid = getWoeid(sys.argv[2])
         if woeid == None:
-            print('That location does not exist.')
+            print('\n! ERROR That location does not exist.\n')
         else:
-            print('WOEID:', woeid)
+            print('\nWOEID:', woeid)
 
     #  when user does not provide location via CLI
     elif len(sys.argv) == 2:
         woeid = getWoeid(str(input('Enter location: ')))
         if woeid == None:
-            print('That location does not exist.')
+            print('\n! ERROR: That location does not exist.\n')
         else:
-            print('WOEID:', woeid)
+            print('\nWOEID:', woeid)
 
 else:
-    print('Input not recognized. use the -h flag for usage instructions.')
+    print('\n! ERROR: Input not recognized. use the -h flag for usage instructions.\n')

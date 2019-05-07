@@ -87,19 +87,28 @@ def geoTweets(woeid):
 # give greeting and prompt user for inputs 
 if len(sys.argv) == 1:
     # ascii art greeting
-    art = pyfiglet.figlet_format("World of Tweets", font = "5lineoblique" ) 
+    print('-' * 50)
+    art = pyfiglet.figlet_format("GeoTweets") 
     print(art)
-    print('-' * 75)
+    print('-' * 50)
     
     # loop that prompts user what they would like to do
     while True:
         choice = input('\nWhat would you like to do?\n(1) Get trends\n(2) Get WOEID\n(3) Exit program\n\nEnter number: ')
         
         if choice == '1':
-            geoTweets(getWoeid(str(input('Enter location: '))))
-        
+            try:
+                geoTweets(getWoeid(str(input('Enter location: '))))
+            except:
+                print('\n! ERROR: Twitter does not record data for that location or it does not exist.')
+
         elif choice == '2':
-            print('WOEID:', getWoeid(str(input('Enter location: '))))
+            woeid = getWoeid(str(input('Enter location: ')))
+            if woeid == None:
+                print('\n! ERROR: That location does not exist.')
+            else:
+                print('WOEID:', woeid)
+            
 
         elif choice == '3':
             print('Exiting. Goodbye!')
@@ -130,6 +139,7 @@ elif sys.argv[1] == '-trends':
         except:
             print('\nERROR: Twitter does not record data for that location or it does not exist.\n') 
 
+# get woeid for provided location
 elif sys.argv[1] == '-woeid':
     #  when user provides location via CLI
     if len(sys.argv) == 3:

@@ -51,8 +51,7 @@ This is useful because people might desire to keep up with the popular culture o
 ---
 
 ## Program Description
-
-***Description goes here***
+GeoTweets is a program that brings together Where on Earth IDs (WOEID) and the Twitter API. It gives users the ability to obtain WOEID numbers or get top trending topics based on location. GeoTweets was created with the purpose of getting trending topics alost ubiquitously, with option to simply obtain a WOEID for other purposes. 
 
 ---
 

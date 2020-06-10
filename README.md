@@ -4,7 +4,6 @@ Michael Dailey, Jenisha Khanal, Ashley Newsome
 <!--Sorted in alphabetical order-->
 
 ## Contributions
-https://github.com/ITM-S19/Apex
 
 
 
